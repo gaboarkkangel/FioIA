@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Chat interactivo con DeepSeek AI">
+    <title>DeepSeek Chat</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>">
+    <script>
+        // Configuración global del chat
+        window.chatConfig = {
+            ui: {
+                maxMessageLength: 2000,
+                maxMessagesInChat: 100,
+                textareaMaxHeight: 150,
+                messageTypes: {
+                    USER: 'user',
+                    BOT: 'bot',
+                    ERROR: 'error'
+                }
+            },
+            errorMessages: {
+                EMPTY_MESSAGE: 'Por favor, escribe un mensaje válido.',
+                OPENAI_ERROR: 'Error al procesar tu mensaje con la IA. Por favor, intenta de nuevo.',
+                DEFAULT: 'Lo siento, ha ocurrido un error. Por favor, intenta de nuevo.'
+            }
+        };
+    </script>
+</head>
+<body>
+    <div class="chat-container">
+        <header class="chat-header">
+            <h1>DeepSeek Chat</h1>
+            <div class="status-indicator">
+                <span class="status-dot"></span>
+                <span class="status-text">Conectado</span>
+            </div>
+        </header>
+
+        <main class="chat-main">
+            <div id="chatMessages" class="chat-messages">
+                <div class="message bot welcome">
+                    ¡Hola! Soy Fio IA, tu asistente virtual. ¿En qué puedo ayudarte hoy?
+                </div>
+            </div>
+
+            <div class="chat-input-container">
+                <textarea 
+                    id="userInput" 
+                    class="chat-input" 
+                    placeholder="Escribe tu mensaje aquí..."
+                    rows="1"
+                    maxlength="500"
+                ></textarea>
+                <button id="sendButton" class="send-button">
+                    <span class="button-text">Enviar</span>
+                    <div class="loading-spinner"></div>
+                </button>
+            </div>
+        </main>
+
+        <footer class="chat-footer">
+            <p>Powered by Gabo AI (Juan López)</p>
+            <div class="typing-indicator hidden">
+                <span></span><span></span><span></span>
+            </div>
+        </footer>
+    </div>
+
+    <script src="./js/script.js"></script>
+</body>
+</html> 
