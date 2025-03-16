@@ -28,6 +28,13 @@ logs/
 # Testing
 coverage/
 
+# Python
+__pycache__/
+*.py[cod]
+venv/
+.env/
+
 # Misc
 .cache/
 .temp/
+.history/
