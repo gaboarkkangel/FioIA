@@ -1,20 +1,21 @@
 import 'dotenv/config';
-import express, { Request, Response, NextFunction } from 'express';
+import express from 'express';
+import type { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import compression from 'compression';
 import morgan from 'morgan';
 import path from 'path';
-import { config } from './config';
-import { router } from './routes';
-import { errorHandler } from './middleware/errorHandler';
-import { logger } from './utils/logger';
+import { config } from '@/config';
+import { router } from '@/routes';
+import { errorHandler } from '@/middleware/errorHandler';
+import { logger } from '@/utils/logger';
 
 const app = express();
 
 // Middleware de seguridad y optimización
-app.use(helmet());
-app.use(cors());
+app.use(helmet(config.security.helmet));
+app.use(cors(config.server.cors));
 app.use(compression());
 app.use(morgan('dev'));
 
@@ -38,25 +39,28 @@ app.use((_req: Request, res: Response, _next: NextFunction) => {
     res.status(404).json({ error: 'Ruta no encontrada' });
 });
 
-// Manejador de errores global (debe ser el último middleware)
+// Manejador de errores global
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     errorHandler(err, req, res, next);
 });
 
 // Iniciar servidor
-const PORT: number = config.server.port || 3000;
+const PORT = config.server.port;
 const server = app.listen(PORT, () => {
     logger.info(`Servidor iniciado en puerto ${PORT}`);
     logger.info(`Ambiente: ${config.server.env}`);
 });
 
 // Manejo de señales de terminación
-process.on('SIGTERM', () => {
-    logger.info('Recibida señal SIGTERM. Cerrando servidor...');
+const gracefulShutdown = () => {
+    logger.info('Iniciando apagado graceful...');
     server.close(() => {
         logger.info('Servidor cerrado.');
         process.exit(0);
     });
-});
+};
+
+process.on('SIGTERM', gracefulShutdown);
+process.on('SIGINT', gracefulShutdown);
 
 export { app }; 

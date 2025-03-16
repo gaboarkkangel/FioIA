@@ -1,5 +1,5 @@
 {
-    "name": "fioia-chat",
+    "name": "deepseek-chat",
     "version": "1.0.0",
     "description": "Chat application using DeepSeek API",
     "main": "src/server.ts",

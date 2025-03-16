@@ -18,12 +18,8 @@ const limiter = rateLimit({
 router.use(limiter);
 
 // Ruta para el chat
-router.post('/chat', async (req, res, next) => {
-    try {
-        await chatController.handleMessage(req, res);
-    } catch (error) {
-        next(error);
-    }
+router.post('/chat', (req, res, next) => {
+    chatController.handleMessage(req, res).catch(next);
 });
 
 // Ruta de health check
